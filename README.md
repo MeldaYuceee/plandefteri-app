@@ -1,4 +1,4 @@
-﻿# Melda'nın Ajandası - Web Geliştirme Javascript Projesi
+﻿#Ajanda projesi
 
 Bu proje, temel modern web teknolojileri (HTML5, CSS3, JavaScript) ve tarayıcı yerel veri saklama mekanizması (`LocalStorage`) kullanılarak geliştirilmiş kişisel bir ajanda / TODO uygulamasıdır.
 
