@@ -1,40 +1,45 @@
-﻿// Melda'nin Ajandasi - JavaScript & LocalStorage CRUD Islemleri
+// Plan Defteri - JavaScript & LocalStorage CRUD Islemleri
 var gorevListesi = [];
 var suAnkiFiltre = "hepsi";
 var secilenDuzenlemeId = null;
 
+// Sayfa yuklendiginde baslat
 window.addEventListener("DOMContentLoaded", function() {
   verileriGetir();
   tarihiYaz();
   listele();
 });
 
+// Tarih Bilgisini Bas
 function tarihiYaz() {
   var bugun = new Date();
   var secenek = { day: 'numeric', month: 'long', weekday: 'short' };
-  document.getElementById("tarihAlani").innerText = bugun.toLocaleDateString("tr-TR", secenek);
+  var el = document.getElementById("tarihAlani");
+  if (el) {
+    el.innerText = bugun.toLocaleDateString("tr-TR", secenek);
+  }
 }
 
-// LOCALSTORAGE VERI YONETIMI
+// 1. LOCALSTORAGE VERI YONETIMI
 function verileriGetir() {
-  var saklanan = localStorage.getItem("melda_ajanda_verisi");
+  var saklanan = localStorage.getItem("plan_defteri_veriler");
   if (saklanan !== null) {
     gorevListesi = JSON.parse(saklanan);
   } else {
     gorevListesi = [
       { id: 101, metin: "Netlify uzerinden projeyi canliya al", oncelik: "Acil", bitti: false },
-      { id: 102, metin: "GitHub reposuna dosyalari push et", oncelik: "Gereken", bitti: false },
-      { id: 103, metin: "Arayuz ekran goruntusunu kaydet", oncelik: "Normal", bitti: true }
+      { id: 102, metin: "GitHub reposuna dosyalari yukle", oncelik: "Normal", bitti: false },
+      { id: 103, metin: "Arayuz ekran goruntusunu kaydet", oncelik: "Gereken", bitti: true }
     ];
     verileriSakla();
   }
 }
 
 function verileriSakla() {
-  localStorage.setItem("melda_ajanda_verisi", JSON.stringify(gorevListesi));
+  localStorage.setItem("plan_defteri_veriler", JSON.stringify(gorevListesi));
 }
 
-// 1. LISTELEME ISLEMI (READ)
+// 2. LISTELEME ISLEMI (READ)
 function listele() {
   var container = document.getElementById("listeAlani");
   var bosUyari = document.getElementById("bosUyari");
@@ -74,24 +79,26 @@ function listele() {
         '<span class="baslik">' + g.metin + '</span>' +
       '</div>' +
       '<div class="butonlar">' +
-        '<button class="btn-duzenle" onclick="duzenlemeyiBaslat(' + g.id + ')">Düzenle</button>' +
-        '<button class="btn-sil" onclick="silmeYap(' + g.id + ')">Sil</button>' +
+        '<button type="button" class="btn-duzenle" onclick="duzenlemeyiBaslat(' + g.id + ')">Düzenle</button>' +
+        '<button type="button" class="btn-sil" onclick="silmeYap(' + g.id + ')">Sil</button>' +
       '</div>';
 
     container.appendChild(li);
   }
 
-  sayac.innerText = gorevListesi.length + " görev";
+  if (sayac) {
+    sayac.innerText = gorevListesi.length + " görev";
+  }
 }
 
-// 2. EKLEME VE GUNCELLEME ISLEMI (CREATE & UPDATE)
+// 3. EKLEME VE GUNCELLEME ISLEMI (CREATE & UPDATE)
 function kaydetGuncelle() {
   var input = document.getElementById("gorevMetni");
   var select = document.getElementById("gorevOnceligi");
   var deger = input.value.trim();
 
   if (deger === "") {
-    alert("Lütfen yapılacak bir not yazın!");
+    alert("Lütfen yapılacak bir iş yazın!");
     input.focus();
     return;
   }
@@ -151,15 +158,15 @@ function duzenlemedenVazgec() {
   document.getElementById("gorevOnceligi").value = "Normal";
 
   var btn = document.getElementById("islemButonu");
-  btn.innerText = "Plana Ekle";
+  btn.innerText = "Ekle";
   btn.style.background = "linear-gradient(135deg, #ff3377, #ef233c)";
 
   document.getElementById("vazgecButonu").style.display = "none";
 }
 
-// 3. SILME ISLEMI (DELETE)
+// 4. SILME ISLEMI (DELETE)
 function silmeYap(id) {
-  if (confirm("Bu görevi listeden silmek istiyor musunuz?")) {
+  if (confirm("Bu görevi silmek istediğinize emin misiniz?")) {
     var guncel = [];
     for (var n = 0; n < gorevListesi.length; n++) {
       if (gorevListesi[n].id !== id) {
@@ -172,6 +179,7 @@ function silmeYap(id) {
   }
 }
 
+// Durum Degistir (Tamamlandi / Bitti)
 function durumTersle(id) {
   for (var p = 0; p < gorevListesi.length; p++) {
     if (gorevListesi[p].id === id) {
@@ -183,6 +191,7 @@ function durumTersle(id) {
   listele();
 }
 
+// Filtre Degistir
 function filtreDegistir(tur) {
   suAnkiFiltre = tur;
   document.getElementById("flt-hepsi").className = (tur === "hepsi" ? "aktif" : "");
