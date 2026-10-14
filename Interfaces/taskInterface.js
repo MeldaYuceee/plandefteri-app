@@ -1,0 +1,6 @@
+﻿// Gorev Arayuz Modeli (Interface)
+// id: number (benzersiz zaman damgasi)
+// metin: string (gorev basligi)
+// oncelik: string ("Acil" | "Gereken" | "Normal")
+// bitti: boolean (tamamlandi durumu)
+// tarih: string (olusturulma zamani)

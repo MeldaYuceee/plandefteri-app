@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan Defteri | Todo Uygulaması</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Components/style.css">
+</head>
+<body>
+
+    <div class="ajanda-kapsayici">
+        <div class="ajanda-baslik">
+            <h1>Plan Defteri</h1>
+            <span class="tarih-kutusu" id="tarihAlani"></span>
+        </div>
+
+        <form class="ekleme-alani" id="gorevFormu" onsubmit="event.preventDefault(); kaydetGuncelle();">
+            <div class="girdi-grubu">
+                <input type="text" id="gorevMetni" placeholder="Yapılacak bir iş yazın..." required>
+                <select id="gorevOnceligi">
+                    <option value="Normal">Orta</option>
+                    <option value="Gereken">Düşük</option>
+                    <option value="Acil">Yüksek</option>
+                </select>
+            </div>
+            <div class="form-butonlar">
+                <button type="submit" id="islemButonu" class="btn-kaydet">Ekle</button>
+                <button type="button" id="vazgecButonu" class="btn-vazgec" onclick="duzenlemedenVazgec()">Vazgeç</button>
+            </div>
+        </form>
+
+        <div class="durum-paneli">
+            <div class="filtre-butonlari">
+                <button type="button" id="flt-hepsi" class="aktif" onclick="filtreDegistir('hepsi')">Tümü</button>
+                <button type="button" id="flt-acik" onclick="filtreDegistir('acik')">Bekleyenler</button>
+                <button type="button" id="flt-biten" onclick="filtreDegistir('biten')">Tamamlananlar</button>
+            </div>
+            <span class="sayac-metni" id="sayacYazisi">0 görev</span>
+        </div>
+
+        <ul id="listeAlani" class="liste"></ul>
+        <div id="bosUyari" class="bos-uyari">Henüz eklenmiş bir görev bulunmuyor.</div>
+
+        <footer>
+            <span>Javascript & LocalStorage Projesi</span>
+        </footer>
+    </div>
+
+    <script src="Pages/main.js"></script>
+</body>
+</html>
